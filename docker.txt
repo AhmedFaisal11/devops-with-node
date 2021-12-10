@@ -1,0 +1,70 @@
+Each line in docker file is a layer
+each line is a layer in docker image and docker take snapshot of every 
+layer and cache it
+So, for example we just change something in our .js file,
+We just want to update the change not 
+our entire image to build again.
+In this scenario , docker help us to make a cache of every layer and once we change something
+docker is smart enough to check which layer has changed So, it will update only that layer
+
+RUN Comand will run at build time by build i mean when we are building our image
+CMD Comand will run at run time byy run i mean when we are actually running our container
+
+After setting up the docker file , we then start building our image 
+For building Image run the following command,
+    
+    *** docker build -t image-name . *** 
+    
+where -t stands for tag name and . specify that our docker file
+is in current directory
+
+Now the docker is build, We have to run it and test it and for running docker image the following command
+can be used,
+
+    *** docker run --rm -d -p 3000:3000 image-name --name nameofcontainer ***
+
+where,
+-p stands for port 
+-d stands for deattched and it will run container in background and print container id
+--rm stands for remove it will automatically remove the container when it will stop
+--name is used for giving name to our container by default it is null
+
+and after running our docker image we are unable to make a request
+and one thing EXPOSE command is just for documentation purposes it will not impact 
+docker image in any way 
+it is used when we want to share our docker file woth somebody so we have to tell
+them which port this image is using and they have to open a port for it 
+
+for stopping the container the following command will be used,
+
+    *** docker stop container-id ***
+    *** docker rm container-name -f ***
+
+the second method is also valid but it is different from above method the way it works is it
+will remove the running docker container but you have to specify -f flag which stands for force 
+you can get docker id by running
+
+    *** docker ps ***
+
+what it will do is list all 
+running container instances 
+
+the thing is docker can talk to outside world but it is not one way another 
+So basically we say on our host machine when traffic comes to specific port we want to 
+forward that traffic to the docker container
+the way we do it by specifing the -p 3000:3000 flag but wait why we have two 3000 ports
+lets see 
+   (traffic comming on this port it can be any port) 3000:3000 (will sending to this port and it is our app port in our case 3000)
+in this we are saying that when traffic comming on 3000 port (left side) we will forward that 
+traffic to port 3000 (right side)
+
+for example your application is running on port 3000 so you have to specify 3000 port on right
+side otherwise your application will not run properly
+
+there is another command for interacting with docker bash shell
+
+    *** docker exec -it container-name bash ***
+
+how to figure out running container ip address
+ *** docker inspect -f "{{ .NetworkSettings.IPAddress }}" container-name ***
+ 
