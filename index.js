@@ -1,5 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
+const userRoute = require('./routes/route');
+const hpp = require('hpp');
 
 // port 
 const port = process.env.PORT || 3000;
@@ -10,16 +12,16 @@ const app = express();
 
 // middlewares
 app.use(helmet());
+app.use(hpp());
+app.use(express.static('./public'));
+app.use(express.json());
+app.use('/users' , userRoute);
 
 
 // Route For Testing Purposes
-app.get('/' , async (req , res) => {
+// app.get('/' , async (req , res) => {
     
-    res.json({
-        Message: "Server is Running",
-        Status: "Perfect"
-    });
-});
+// });
 
 
 // starting the server
